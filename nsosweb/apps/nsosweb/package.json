@@ -1,0 +1,75 @@
+{
+  "name": "@nsos/nsosweb",
+  "version": "5.5.2",
+  "homepage": "https://vben.pro",
+  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vbenjs/vue-vben-admin.git",
+    "directory": "apps/nsosweb"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "vben",
+    "email": "ann.vben@gmail.com",
+    "url": "https://github.com/anncwb"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "pnpm vite build --mode production",
+    "build:analyze": "pnpm vite build --mode analyze",
+    "build:staging": "pnpm vite build --mode staging",
+    "dev": "pnpm vite --mode development",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+  },
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "@flyfish-group/file-viewer3": "1.0.2",
+    "@handsontable/vue3": "14.1.0",
+    "@vben/access": "workspace:*",
+    "@vben/common-ui": "workspace:*",
+    "@vben/constants": "workspace:*",
+    "@vben/hooks": "workspace:*",
+    "@vben/icons": "workspace:*",
+    "@vben/layouts": "workspace:*",
+    "@vben/locales": "workspace:*",
+    "@vben/plugins": "workspace:*",
+    "@vben/preferences": "workspace:*",
+    "@vben/request": "workspace:*",
+    "@vben/stores": "workspace:*",
+    "@vben/styles": "workspace:*",
+    "@vben/types": "workspace:*",
+    "@vben/utils": "workspace:*",
+    "@vue-office/docx": "^1.6.3",
+    "@vue-office/excel": "^1.7.14",
+    "@vueuse/core": "catalog:",
+    "dayjs": "catalog:",
+    "drawio-embed": "^1.0.2",
+    "echarts": "5.6.0",
+    "element-plus": "catalog:",
+    "exceljs": "^4.4.0",
+    "handsontable": "^14.1.0",
+    "jszip": "^3.10.1",
+    "leader-line": "^1.0.8",
+    "mammoth": "^1.11.0",
+    "marked": "^16.2.1",
+    "mermaid": "^11.10.1",
+    "pdfjs-dist": "3.11.174",
+    "pinia": "catalog:",
+    "search-bar-vue3": "^0.2.1",
+    "tinycolor2": "^1.6.0",
+    "txml": "^5.2.1",
+    "vue": "catalog:",
+    "vue-excel-viewer": "^0.1.1",
+    "vue-office": "^0.0.5",
+    "vue-router": "catalog:",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "unplugin-element-plus": "catalog:"
+  }
+}
