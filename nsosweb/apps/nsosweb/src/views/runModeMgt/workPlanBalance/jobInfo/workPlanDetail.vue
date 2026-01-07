@@ -519,7 +519,7 @@
             </el-row>
             <el-row :gutter="20">
               <el-col v-for="(file, index) in attachMergeList" :key="file.id" :span="12" style="height: 45px; line-height: 45px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; color: black; font-size: 14px; font-weight: 400">
-                <div class="file-name" :title="file.name" style="background-color: #f6f6f8; height: 45px; padding-left: 20px">
+                <div class="file-name" :title="file.name" style="background-color: #f6f6f8; height: 45px; padding-left: 20px; cursor: pointer;" @click="downloadAttach(file.name, file.fileId, JSON.stringify(file.iDate),data.oid)">
                   <el-icon color="grey" style="margin-right: 10px"><Document /></el-icon>{{ file.name }}
                 </div>
                 <div style="width: 100px; background-color: #f6f6f8; height: 45px">
@@ -1034,7 +1034,7 @@ function getObjectTypeLabels(objectType, options) {
 // 下载附件
 async function downloadAttach(name: string, fileId: string, iDate: string, oid: string) {
   try {
-    await downloadFile(import.meta.env.VITE_NSOSFS + `/ydCommon/downloadFile`, { fileId: fileId, idate: iDate , oid: oid}, name, 'post')
+    await downloadFile(import.meta.env.VITE_NSOSFS + `/ydCommon/downloadFile`, { fileId: fileId, idate: iDate , oid: oid, bkUsername: data.value.creatorId}, name, 'post')
   } catch {}
 }
 

@@ -60,7 +60,7 @@
           </el-container>
         </div>
         <div v-else>
-           <pageControl :key="item.name"  :orderType='item.orderType' :oid="item.name" :tid="item.tid" ></pageControl>
+           <pageControl :key="item.name" sourceType="2" :orderType='item.orderType' :oid="item.name" :tid="item.tid" ></pageControl>
           </div>
       </el-tab-pane>
     </el-tabs>

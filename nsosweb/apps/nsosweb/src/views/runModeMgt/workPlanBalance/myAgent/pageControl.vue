@@ -12,12 +12,12 @@
     </div>
     <div style="height:calc(100vh - 200px); overflow-y: auto;">
       <div v-if="orderType==='信息两票'" >
-        <OperationOrder v-if="isOrderDetail==='1'" sourceType="2" :oid="oid" :tid="tid"  @custom-event="toWorkPlanPage" @sendPid="getPidVal"></OperationOrder>
+        <OperationOrder v-if="isOrderDetail==='1'" :sourceType="sourceType" :oid="oid" :tid="tid"  @custom-event="toWorkPlanPage" @sendPid="getPidVal"></OperationOrder>
         <OperationFlow v-if="isOrderDetail==='2'" :oid="oid" :pid="pid" ></OperationFlow>
         <OperationPlanOrder v-if="isOrderDetail==='3'" :oid="oid" :workPlanOid="workPlanOid" @custom-event="toWorkPlanPage" @sendParam="getPidVal" ></OperationPlanOrder>
       </div>
       <div v-if="orderType==='并网管控'">
-        <NetOrder v-if="isOrderDetail==='1'"  sourceType="2"  :oid="oid" :tid="tid" @custom-event="toWorkPlanPage" @sendPid="getPidVal"></NetOrder>
+        <NetOrder v-if="isOrderDetail==='1'"  :sourceType="sourceType"  :oid="oid" :tid="tid" @custom-event="toWorkPlanPage" @sendPid="getPidVal"></NetOrder>
         <NetFlow v-if="isOrderDetail==='2'" :oid="oid" :pid="pid" ></NetFlow>
         <NetPlanOrder v-if="isOrderDetail==='3'" :nid="workPlanOid" @custom-event="toWorkPlanPage" @sendPid="getPidVal"></NetPlanOrder>
       </div>
@@ -39,6 +39,7 @@ import NetFlow from '../../gridConnectionAnalysis/gridOrderDetails/flowDetail.vu
 const orderType = defineModel('orderType') // 工单类型
 const oid =  defineModel('oid') 
 const tid = defineModel('tid')
+const sourceType = defineModel('sourceType')
 const pid = ref('')
 const workPlanOid = ref('')
 

@@ -32,7 +32,7 @@
           <el-table-column prop="effectiveEndTime" label="有效期结束时间" align="center" width="200"></el-table-column>
           <el-table-column label="是否启用" align="center" width="100">
             <template #default="scope">
-              <el-switch v-model="scope.row.enabled" inline-prompt active-value="1" inactive-value="0" active-text="是" inactive-text="否" disabled/>
+              <el-switch v-model="scope.row.enabled" inline-prompt active-value="1" inactive-value="0" active-text="是" inactive-text="否" @change="updateRuleState(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column align="center" label="操作" width="200">
@@ -170,7 +170,7 @@
                 <template #default="scope">
                   <el-button v-if="scope.row.edit === true" size="small" type="primary" link @click="saveEdit(scope.$index, scope.row)">保存</el-button>
                   <el-button v-else="scope.row.edit === false" size="small" type="primary" link @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                  <el-button size="small" type="danger" link @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                  <el-button size="small" type="danger" link @click="handleDelete(scope.$index, scope.row, 'insert')">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -307,7 +307,7 @@
                 <template #default="scope">
                   <el-button v-if="scope.row.edit === true" size="small" type="primary" link @click="saveEdit(scope.$index, scope.row)">保存</el-button>
                   <el-button v-else="scope.row.edit === false" size="small" type="primary" link @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                  <el-button size="small" type="danger" link @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                  <el-button size="small" type="danger" link @click="handleDelete(scope.$index, scope.row, 'edit')">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -593,6 +593,20 @@ async function handelEdit() {
     editDialog.value = false
     query()
   } catch (error) {}
+}
+
+// 更新启用状态
+async function updateRuleState(row){
+  try {
+    const res = await getRulesByIdApi({id: row.id})
+    let ruleData = res
+    ruleData.taskAuditRule.enabled = ruleData.taskAuditRule.enabled === '0' ? '1' : '0'
+    const rs = await saveOrUpdateRuleApi(ruleData)
+    ElMessage.success('更新成功!')
+    query()
+  } catch (error) {
+    
+  }
 }
 
 const insertRules = {

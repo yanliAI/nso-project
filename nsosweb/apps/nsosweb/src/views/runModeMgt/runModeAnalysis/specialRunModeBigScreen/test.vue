@@ -3,49 +3,50 @@
     <!-- Excel预览区域 -->
     <div v-if="workbook" class="excel-container">
 
-
       <!-- Excel表格 -->
       <div class="table-container" ref="tableContainer"
         @wheel="handleWheel"
         @mouseenter="onTableMouseEnter"
         @mouseleave="onTableMouseLeave"
         >
-        <div class="table-wrapper" ref="tableWrapper" :style="getTableContainerStyle()">
-          <table ref="tableElement">
-            <thead>
-              <tr>
-                <th class="header-corner">#</th>
-                <th
-                  v-for="(colIndex) in getRenderColumnCount()"
-                  :key="colIndex"
-                  class="header-cell"
-                  :style="getColumnStyle(colIndex)"
-                >
-                  {{ getColumnName(colIndex) }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(row, rowIndex) in currentSheetData" :key="rowIndex" v-if="currentSheetData.length>0">
-                <td class="row-header" :style="getRowHeaderStyle()">{{ rowIndex + 1 }}</td>
-                <td
-                  v-for="(_, colIndex) in getRenderColumnCount()" 
-                  :key="colIndex"
-                  :class="getCellClass(row[colIndex] || { isEmpty: true })"
-                  :style="getCellStyle(row[colIndex] || { isEmpty: true }, rowIndex, colIndex)"
-                  :rowspan="getRowSpan(row[colIndex] || { isEmpty: true }, rowIndex, colIndex)"
-                  :colspan="getColSpan(row[colIndex] || { isEmpty: true }, rowIndex, colIndex)"
-                >
-                  <div class="cell-content">{{ getCellValue(row[colIndex] || { isEmpty: true }) }}</div>
-                </td>
-              </tr>
-              <tr v-else>
-                  <td colspan="100%" style="width: 100%; text-align: center;">
-                    <el-empty description="无表格数据" />
+        <div class="zoom-wrapper" :style="getZoomWrapperStyle()">
+          <div class="table-wrapper" ref="tableWrapper">
+            <table ref="tableElement">
+              <thead>
+                <tr>
+                  <th class="header-corner">#</th>
+                  <th
+                    v-for="(colIndex) in getRenderColumnCount()"
+                    :key="colIndex"
+                    class="header-cell"
+                    :style="getColumnStyle(colIndex - 1)"
+                  >
+                    {{ getColumnName(colIndex - 1) }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, rowIndex) in currentSheetData" :key="rowIndex" v-if="currentSheetData.length>0">
+                  <td class="row-header" :style="getRowHeaderStyle()">{{ rowIndex + 1 }}</td>
+                  <td
+                    v-for="colIndex in getRenderColumnCount()" 
+                    :key="colIndex"
+                    :class="getCellClass(row[colIndex - 1] || { isEmpty: true })"  <!-- 修复：索引减1 -->
+                    :style="getCellStyle(row[colIndex - 1] || { isEmpty: true }, rowIndex, colIndex - 1)"  <!-- 修复：索引减1 -->
+                    :rowspan="getRowSpan(row[colIndex - 1] || { isEmpty: true }, rowIndex, colIndex - 1)"  <!-- 修复：索引减1 -->
+                    :colspan="getColSpan(row[colIndex - 1] || { isEmpty: true }, rowIndex, colIndex - 1)"  <!-- 修复：索引减1 -->
+                  >
+                    <div class="cell-content">{{ getCellValue(row[colIndex - 1] || { isEmpty: true }) }}</div>  <!-- 修复：索引减1 -->
                   </td>
-              </tr>
-            </tbody>
-          </table>
+                </tr>
+                <tr v-else>
+                    <td colspan="100%" style="width: 100%; text-align: center;">
+                      <el-empty description="无表格数据" />
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <!-- 工作表信息 -->
@@ -498,13 +499,12 @@ const calculateColumnStyles = () => {
   columnStyles.value = newStyles
 }
 
-const getTableContainerStyle = () => {
+const getZoomWrapperStyle = () => {
   return {
     transform: `scale(${zoomLevel.value})`,
     transformOrigin: '0 0',
-    overflow: 'auto',
-    minWidth: '100%',
-    minHeight: '100%'
+    display: 'inline-block', // 保持缩放原点正确
+    minWidth: '100%'
   }
 }
 
@@ -664,7 +664,6 @@ const adjustTableLayout = () => {
   const tableWidth = tableElement.value.scrollWidth
   const containerWidth = tableContainer.value ? tableContainer.value.clientWidth : 0
   
-  // 仅在 1倍缩放时调整 minWidth
   if (zoomLevel.value === 1) {
     if (tableWidth > containerWidth) {
       tableWrapper.value.style.minWidth = `${tableWidth}px`
@@ -1085,6 +1084,10 @@ onUnmounted(() => {
   position: relative;
 }
 
+.zoom-wrapper {
+  min-width: 100%;
+}
+
 .table-wrapper {
   min-width: 100%;
   display: inline-block;
@@ -1092,11 +1095,11 @@ onUnmounted(() => {
 
 table {
   border-collapse: collapse;
-  width: 100%;
+  /* width: 100%; */
   font-size: 13px;
   table-layout: auto;
-  /* table-layout: fixed; */
-  min-width: 100%;
+  table-layout: fixed;
+  /* min-width: 100%; */
 }
 
 th, td {
@@ -1132,7 +1135,7 @@ th, td {
   font-weight: 600;
   position: sticky;
   left: 0;
-  z-index: 1;
+  z-index: 8;
   /* border-right: 2px solid #dcdfe6; */
   box-shadow: inset -1px 0 0 0 #dcdfe6; 
   will-change: transform;
@@ -1146,7 +1149,7 @@ th, td {
   font-weight: 600;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 9;
   border-bottom: insert -1px solid #dcdfe6;
   min-width: 60px;
   text-align: center;

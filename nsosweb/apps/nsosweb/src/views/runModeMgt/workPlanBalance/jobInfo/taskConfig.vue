@@ -401,7 +401,9 @@ async function submitData() {
           nextuser: configData.selectedSigner.join(',')
         }
       })
-      ElMessage.success('签收成功')
+      ElMessage.success('提交成功')
+      submitState.value = 'success'
+      submitAllState.value = 'success'
     } else {
       const uniqueUsers = (autoHandler.value?.signerUserAuto ?? []).filter((user, index, self) => index === self.findIndex((u) => u.nid === user.nid && u.userid === user.userid))
       await getworkTaskUserList()

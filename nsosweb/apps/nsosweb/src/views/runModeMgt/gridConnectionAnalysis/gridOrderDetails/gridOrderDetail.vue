@@ -321,18 +321,21 @@
                   </span>
                 </template>
               </el-table-column>
-
-              <el-table-column label="专家审查意见" width="200" align="center" :fixed="sourceType === '2' ? (hasReviewItem ? 'right' : false) : false">
+              <!-- :fixed="sourceType === '2' ? (hasReviewItem ? 'right' : false) : false" -->
+              <el-table-column label="专家审查意见" width="200" align="center" >
                 <template #default="{ row, $index }">
-                  <span v-if="row.expertList && sourceType !== '2'" v-for="item in row.expertList">
+                  <span v-if="row.expertList" v-for="item in row.expertList">
                     <p>{{ `${item.userName}:${item.record}` }}</p>
                   </span>
-                  <span v-if="row.userId === userStore.userInfo.logincode">
+                  <!-- <span v-if="row.expertList && sourceType !== '2'" v-for="item in row.expertList">
+                    <p>{{ `${item.userName}:${item.record}` }}</p>
+                  </span> -->
+                  <!-- <span v-if="row.userId === userStore.userInfo.logincode">
                     <el-input v-model="currentUserRecords[row.id]" @change="handleRecordChange(row, $event)" type="textarea" :rows="4"></el-input>
-                  </span>
+                  </span> -->
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="250" align="center" :fixed="sourceType === '2' ? (hasReviewItem ? 'right' : false) : false">
+              <!-- <el-table-column label="操作" width="250" align="center" :fixed="sourceType === '2' ? (hasReviewItem ? 'right' : false) : false">
                 <template #default="{ row, $index }">
                   <el-radio-group v-model="currentUserResults[row.id]" size="small" v-if="row.userId === userStore.userInfo.logincode" @change="handleResultChange(row, $event)">
                     <el-radio-button label="通过" :value="1" />
@@ -340,7 +343,7 @@
                     <el-radio-button label="不涉及" :value="2" />
                   </el-radio-group>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
           </el-form-item>
         </el-form>
