@@ -822,7 +822,7 @@ function calStrLength(msg) {
     return bytesCount;
 }
 
-import JSEncrypt from 'jsencrypt/bin/jsencrypt.min';
+import JSEncrypt from 'jsencrypt'
 export function doEncrypt(publicKey, msg) {
   if (!publicKey) {
     return msg;
